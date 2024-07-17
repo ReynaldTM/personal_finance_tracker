@@ -5,25 +5,52 @@
 
 from datetime import datetime
 
-def get_date(prompt, allow_default=False):# prompt is input is question before date come
-                                                                   # for getting date in multiple different places
-                                                                   # allow_default = will select current date by hitting return.
-                                                                   # since its set to False, date will be required
+date_format = "%d-%m-%Y"
+CATEGORIES = {"I": "Income", "E": "Expense"}
+
+
+def get_date(prompt, allow_default=False):  # prompt is input is question before date come
+    # for getting date in multiple different places
+    # allow_default = will select current date by hitting return.
+    # since it's set to False, getting current date won't allow an empty input, until valid input is entered
+
     date_str = input(prompt)
-    if allow_default and not date_str: # allow_default is True and date_str is None
-        return datetime.today().strftime("%d-%m-%Y") # return current date at format, date, month, year
+    if allow_default and not date_str:
+        # allow_default is True and date_str is None
+        return datetime.today().strftime(date_format)
+        # return current date at format, date, month, year
+
     try:
-        valid_date = datetime.strftime(date_str,"%d-%m-%Y")
-        return valid_date.strftime(date_str,"%d-%m-%Y")
+        valid_date = datetime.strpftime(date_str, date_format)
+        # takes date_str and converts into datetime object that is valid
+        return valid_date.strftime(date_format)
+        # converts it back into string representation that is in format
+
     except ValueError:
         print("Invalid date format. Please enter date in dd-mm-yyyy format")
         return get_date(prompt, allow_default=False)
+        # recursive function
+
 
 def get_amount():
-    pass
+    try:
+        amount = float(input("Enter the amount: "))
+        # a float is whole with decimal number
+        if amount <= 0:
+            raise ValueError("Amount must be a non-negative, non-zero value.")
+        return amount
+    except ValueError as e:
+        print(e)
+        return get_amount()
+
 
 def get_category():
-    pass
+    category = input("Enter the category ( 'I' for Income or 'E' for Expense) : ").upper()
+    if category in CATEGORIES:
+        return CATEGORIES[category]
+    print("Invalid category.  Please enter 'I' for Income or 'E' for Expense")
+    return category
+
 
 def get_description():
-    pass
+    return input("Enter a description (Optional): ")

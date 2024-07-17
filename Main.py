@@ -5,11 +5,13 @@
 import pandas as pd
 import csv
 from datetime import datetime
+from data_entry import get_date, get_amount, get_category, get_description
 
 
 class CSV:
     CSV_FILE = "finance_data.csv"  # class variable
     COLUMNS = ["date", "amount", "category", "description"]
+    FORMAT = "%d-%m-%Y"
 
     @classmethod  # will have access to class itself, but not its instance
     # meaning it has access to other class methods and class variables
@@ -35,6 +37,21 @@ class CSV:
             writer.writerow(new_entry)  # new data being written into their own rows according to columns
             print("Entry added successfully")
 
+    @classmethod
+    def get_transaction(cls, star_date, end_date):
+        df = pd.read_csv(cls.CSV_FILE)
+        df["date"] = pd.to_datetime(df["date"], format=CSV.FORMAT)
+        # access all values in date column
 
-CSV.initialize_csv()
-CSV.add_entry("20-07-24", 125.65, "Income", "salary")
+
+def add():
+    CSV.initialize_csv()
+    date = get_date("Please enter date of transaction  (dd-mm-yyyy format),  or enter for today's date: ",
+                    allow_default=True)
+    amount = get_amount()
+    category = get_category()
+    description = get_description()
+    CSV.add_entry(date, amount, category, description)
+
+
+add()
