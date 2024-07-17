@@ -1,7 +1,6 @@
 # only pip install, not pip3.  pip3 is for Mac and linux
 # for main flow of program
 
-
 import pandas as pd
 import csv
 from datetime import datetime
@@ -38,10 +37,38 @@ class CSV:
             print("Entry added successfully")
 
     @classmethod
-    def get_transaction(cls, star_date, end_date):
+    def get_transaction(cls, start_date, end_date):
         df = pd.read_csv(cls.CSV_FILE)
+        # making a dataframe
         df["date"] = pd.to_datetime(df["date"], format=CSV.FORMAT)
-        # access all values in date column
+        # df[at value] is accessing all values in date column using pandas, converting into format stated
+        start_date = datetime.strptime(start_date, CSV.FORMAT)
+        end_date = datetime.strptime(end_date, CSV.FORMAT)
+
+        mask = ((df["date"] >= start_date) & (df["date"]) <= end_date)
+        # checking if data in current row on column date is less than or equal to end date, applies to every row
+        # "&" only used when working with pandas or Mask specifically
+        filtered_df = df.loc[mask]
+        # locating different rows that mask matches then return filtered dataframe
+
+        if filtered_df.empty:
+            print("No transactions found in given date range")
+        else:
+            print(f"Transaction from {start_date.stftime(CSV.FORMAT)} to {end_date.stftime(CSV.FORMAT)}"
+                  )
+            print(
+                filtered_df.to_string(
+                    index=False, formatters={"date": lambda x: x.strftime(CSV.FORMAT)}
+                                        )
+                  )
+            # key & pair, date is key. Function is pair using lambda as pair is calling all entry in date column
+
+            total_income = filtered_df[filtered_df["category"] == "Income"]["amount"].sum()
+            total_expense = filtered_df[filtered_df["category"] == "Expense"]["amount"].sum()
+            print("\nSummary: ")
+            print(f"Total Income: ${total_income:.2f}")
+            print(f"Total Expense: ${total_expense:.2f}")
+            print(f"Net Savings: ${(total_income-total_expense):.2f}")
 
 
 def add():
