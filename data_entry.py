@@ -6,7 +6,7 @@
 from datetime import datetime
 
 date_format = "%d-%m-%Y"
-CATEGORIES = {"I": "Income", "E": "Expense"}
+CATEGORIES = {"I": "Income", "E": "Expense", "G": "Grocery", "L": "Luxury Expenses", "H": "Health Care"}
 
 
 def get_date(prompt, allow_default=False):  # prompt is input is question before date come
@@ -21,7 +21,7 @@ def get_date(prompt, allow_default=False):  # prompt is input is question before
         # return current date at format, date, month, year
 
     try:
-        valid_date = datetime.strpftime(date_str, date_format)
+        valid_date = datetime.strptime(date_str, date_format)
         # takes date_str and converts into datetime object that is valid
         return valid_date.strftime(date_format)
         # converts it back into string representation that is in format
@@ -45,11 +45,16 @@ def get_amount():
 
 
 def get_category():
-    category = input("Enter the category ( 'I' for Income or 'E' for Expense) : ").upper()
+    category = input(
+        "Enter the category: \n'I' for Income \n'E' for Expense \n'G' for Grocery,"
+        "\n'L' for Luxury Expenses \n'H' for Health Care\n"
+    ).upper()
     if category in CATEGORIES:
         return CATEGORIES[category]
-    print("Invalid category.  Please enter 'I' for Income or 'E' for Expense")
-    return category
+
+    print("Invalid category.  Please enter n'I' for Income \n'E' for Expense \n'G' for Grocery,"
+        "\n'L' for Luxury Expenses \n'H' for Health Care\n")
+    return get_category()
 
 
 def get_description():

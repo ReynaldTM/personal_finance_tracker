@@ -45,7 +45,7 @@ class CSV:
         start_date = datetime.strptime(start_date, CSV.FORMAT)
         end_date = datetime.strptime(end_date, CSV.FORMAT)
 
-        mask = ((df["date"] >= start_date) & (df["date"]) <= end_date)
+        mask = ((df["date"] >= start_date) & (df["date"] <= end_date))
         # checking if data in current row on column date is less than or equal to end date, applies to every row
         # "&" only used when working with pandas or Mask specifically
         filtered_df = df.loc[mask]
@@ -54,8 +54,9 @@ class CSV:
         if filtered_df.empty:
             print("No transactions found in given date range")
         else:
-            print(f"Transaction from {start_date.stftime(CSV.FORMAT)} to {end_date.stftime(CSV.FORMAT)}"
+            print(f"Transaction from {start_date.strftime (CSV.FORMAT)} to {end_date.strftime (CSV.FORMAT)}"
                   )
+
             print(
                 filtered_df.to_string(
                     index=False, formatters={"date": lambda x: x.strftime(CSV.FORMAT)}
@@ -80,5 +81,29 @@ def add():
     description = get_description()
     CSV.add_entry(date, amount, category, description)
 
+def plot_transactions(df):
+    df. set_index("date", inplace=True)
 
-add()
+    income_df = df[df["category"] == "Income"].resample("D")
+
+def main():
+    while True:
+        print("\n1. Add new Transaction")
+        print("2. View Transaction and summary within a date range.")
+        print("3. Exit")
+        choice = input("Enter your choice (1-3): ")
+
+        if choice == "1":
+            add()
+        elif choice == "2":
+            start_date = get_date("Enter the star date (dd-mm-yyyy): ")
+            end_date = get_date("Enter the end date (dd-mm-yyyy): ")
+            df = CSV.get_transaction(start_date,end_date)
+        elif choice == "3":
+            print("Exiting")
+            break
+        else:
+            print("Invalid choice.  Enter 1, 2,  or3.")
+
+if __name__ == "__main__":
+    main()
