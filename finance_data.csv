@@ -1,2 +1,15 @@
 date,amount,category,description
 
+
+20-07-2024,100.0,Expense,Grocery
+01-07-2024,50.0,Expense,Grocery
+07-07-2024,75.0,Expense,Phone Bill
+12-07-2024,255.0,Expense,CAR PAYMENT
+26-07-2024,255.0,Expense,Car Payment
+26-07-2024,150.0,Expense,Rent
+27-07-2024,500.0,Expense,Investments
+12-07-2024,1000.0,Income,Work
+26-07-2024,1000.0,Income,Work
+14-07-2024,400.0,Income,Government check
+17-07-2024,300.0,Expense,Self care
+
